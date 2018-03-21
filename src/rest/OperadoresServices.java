@@ -1,7 +1,6 @@
 package rest;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -19,11 +18,11 @@ import javax.ws.rs.core.Response;
 
 import tm.AlohandesTM;
 import vos.Cliente;
-import vos.Contrato;
+import vos.Operador;
 import vos.Sitio;
 
-@Path("clientes")
-public class ClienteServices {
+@Path("operadores")
+public class OperadoresServices {
 	@Context
 	private ServletContext context;
 	
@@ -37,10 +36,10 @@ public class ClienteServices {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addCliente(Cliente rotonda) {
+	public Response addOperador(Operador rotonda) {
 		AlohandesTM tm = new AlohandesTM(getPath());
 		try {
-			tm.addCliente(rotonda);
+			tm.addOperador(rotonda);
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
@@ -48,46 +47,44 @@ public class ClienteServices {
 	}
 	
 	@POST
-	@Path("{idCliente}/addReserva/{idSitio}/{servicios}")
+	@Path("/addSitio/{idoperador}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addReserva(Contrato rotonda, @PathParam("idCliente") long idCliente, @PathParam("idSitio") long idSitio, @PathParam("servicios") String Servicios) {
+	public Response addSitio(Sitio rotonda, @PathParam("idoperador") long idoperador) {
 		AlohandesTM tm = new AlohandesTM(getPath());
 		try {
-			tm.addReserva(rotonda, idCliente, idSitio, Servicios);
+			tm.addSitio(rotonda, idoperador);
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
 		return Response.status(200).entity(rotonda).build();
 	}
 	@POST
-	@Path("{idCliente}/cancelReserva/{idreserva}")
+	@Path("{idoperador}/removeSitio/{idsitio}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response cancelReserva(@PathParam("idCliente") long idCliente, @PathParam("idreserva") long idReserva) {
+	public Response addSitio(@PathParam("idoperador") long idoperador,@PathParam("idsitio") long idsitio) {
 		AlohandesTM tm = new AlohandesTM(getPath());
 		try {
-			tm.cancelReserva(idCliente, idReserva);
+			tm.removeSitio(idoperador, idsitio);
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
-		return Response.status(200).entity(idCliente).build();
+		return Response.status(200).entity(idsitio).build();
 	}
 	
 	@GET
-	@Path("top20")
+	@Path("{idoperador}/ganancias/{ano}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getGanancias() {
+	public Response getGanancias(@PathParam("idoperador") long idoperador,@PathParam("ano") int ano) {
 		AlohandesTM tm = new AlohandesTM(getPath());
-		List<Long> returner =  new ArrayList<Long>();
+		double returner = 0;
 		try {
-			returner = tm.top20();
+			returner = tm.getGanancias(idoperador, ano);
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
 		return Response.status(200).entity(returner).build();
 	}
-	
-	
 }

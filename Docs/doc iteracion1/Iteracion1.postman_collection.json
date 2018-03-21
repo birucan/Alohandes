@@ -1,0 +1,275 @@
+{
+	"info": {
+		"name": "Iteracion1",
+		"_postman_id": "684b684e-fd96-69f2-d3ef-e47891991789",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "RF1",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"tipo\":\"habitacion\", \"descripcion\":\"habitacion\" }"
+				},
+				"url": {
+					"raw": "http://localhost:8080/AlohAndes/rest/operadores/addSitio",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"AlohAndes",
+						"rest",
+						"operadores",
+						"addSitio"
+					]
+				},
+				"description": "Agrega operador al sistema"
+			},
+			"response": []
+		},
+		{
+			"name": "RF2",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"idcontrato\":1, \"idcliente\":1, \"idsitio\":1, \"estado\":\"\", \"fechain\":\"3-20-2018\",\"fechaen\":\"5-20-2018\", \"costo\":50000, \"costoextra\":20000 }"
+				},
+				"url": {
+					"raw": "http://localhost:8080/AlohAndes/rest/clientes/1/addReserva/1/1.2.3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"AlohAndes",
+						"rest",
+						"clientes",
+						"1",
+						"addReserva",
+						"1",
+						"1.2.3"
+					]
+				},
+				"description": "Agrega sitio al sistema"
+			},
+			"response": []
+		},
+		{
+			"name": "RF4",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"nombre\":\"pepe\", \"apellido\":\"Silvia\",\"vinculo\":\"estudiante\" }"
+				},
+				"url": {
+					"raw": "http://localhost:8080/AlohAndes/rest/clientes/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"AlohAndes",
+						"rest",
+						"clientes",
+						""
+					]
+				},
+				"description": "Agrega Reserva al sistema"
+			},
+			"response": []
+		},
+		{
+			"name": "RF3",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"nombre\":\"pepe\", \"apellido\":\"Silvia\",\"vinculo\":\"estudiante\" }"
+				},
+				"url": {
+					"raw": "http://localhost:8080/AlohAndes/rest/clientes/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"AlohAndes",
+						"rest",
+						"clientes",
+						""
+					]
+				},
+				"description": "Agrega cliente al sistema"
+			},
+			"response": []
+		},
+		{
+			"name": "RF5",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/AlohAndes/rest/clientes/1/cancelReserva/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"AlohAndes",
+						"rest",
+						"clientes",
+						"1",
+						"cancelReserva",
+						"1"
+					]
+				},
+				"description": "Agrega cancela reserva al sistema"
+			},
+			"response": []
+		},
+		{
+			"name": "RF6",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/AlohAndes/rest/operadores/2/removeSitio/22",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"AlohAndes",
+						"rest",
+						"operadores",
+						"2",
+						"removeSitio",
+						"22"
+					]
+				},
+				"description": "quita un sitio si no tiene dependencias"
+			},
+			"response": []
+		},
+		{
+			"name": "RFC1",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/AlohAndes/rest/operadores/2/ganancias/2018",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"AlohAndes",
+						"rest",
+						"operadores",
+						"2",
+						"ganancias",
+						"2018"
+					]
+				},
+				"description": "Ganancias por operador por año\n"
+			},
+			"response": []
+		},
+		{
+			"name": "RFC2",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/AlohAndes/rest/clientes/top20",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"AlohAndes",
+						"rest",
+						"clientes",
+						"top20"
+					]
+				},
+				"description": "da los 20 id mas populares de sitios"
+			},
+			"response": []
+		}
+	]
+}

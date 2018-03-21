@@ -45,6 +45,7 @@ public class Contrato {
 	@JsonProperty(value = "costotot") Double costotot,
 	@JsonProperty(value = "fechapedido") String fechapedido){
 		
+		this.idcontrato = idcontrato;
 		this.idcliente = idcliente;
 		this.idsitio = idsitio;
 		this.estado = estado;
