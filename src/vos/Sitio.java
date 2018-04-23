@@ -17,17 +17,22 @@ public class Sitio {
 	private String descripcion;
 	
 
+	@JsonProperty(value = "disponible")
+	private Short disponible;
+	
 	//contructor
 	public Sitio(
 			@JsonProperty(value = "idsitio") Long idsitio,
 			@JsonProperty(value = "idoperador") Long idoperador,
 			@JsonProperty(value = "tipo")String tipo,
-			@JsonProperty(value = "descripcion")String descripcion){
+			@JsonProperty(value = "descripcion")String descripcion,
+			@JsonProperty(value = "disponible")Short disponible){
 				super();
 				this.descripcion = descripcion;
 				this.idoperador = idoperador;
 				this.tipo = tipo;
 				this.descripcion = descripcion;
+				this.disponible = disponible;
 	}
 
 
@@ -68,6 +73,16 @@ public class Sitio {
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+
+
+	public Short getDisponible() {
+		return disponible;
+	}
+
+
+	public void setDisponible(Short disponible) {
+		this.disponible = disponible;
 	}
 
 	

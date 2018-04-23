@@ -372,4 +372,44 @@ public class AlohandesTM {
 	  }
 		return returner;
 	}
+
+	public String addReservaColectiva(long idEvento, String servicios) {
+		 		String response = "No es posible la reserva";
+				DAOClientes daoC = new DAOClientes();
+				try 
+				{
+					
+					this.conn = darConexion();
+					daoC.setConn(conn);
+					if(daoC.VerificarEvento(idEvento, servicios.split(","))){
+						daoC.addSereven(idEvento, servicios.split(","));
+						daoC.addReservaCollectiva(idEvento, servicios);
+						response = "La reserva fue realizada exitosamente";
+					}
+					
+					
+					conn.commit();
+
+				} catch (SQLException e) {
+					System.err.println("SQLException:" + e.getMessage());
+					e.printStackTrace();
+					throw e;
+				} catch (Exception e) {
+					System.err.println("GeneralException:" + e.getMessage());
+					e.printStackTrace();
+					throw e;
+				} finally {
+					try {
+						daoC.cerrarRecursos();
+						if(this.conn!=null)
+							this.conn.close();
+					} catch (SQLException exception) {
+						System.err.println("SQLException closing resources:" + exception.getMessage());
+						exception.printStackTrace();
+						throw exception;
+					}
+				
+				}
+			
+	}
 }

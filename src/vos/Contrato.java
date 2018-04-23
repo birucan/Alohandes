@@ -3,7 +3,7 @@ package vos;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class Contrato {
-	//Attributo
+	
 	@JsonProperty(value = "idcontrato")
 	private Long idcontrato;
 	
@@ -34,16 +34,20 @@ public class Contrato {
 	@JsonProperty(value = "fechapedido")
 	private String fechapedido;
 	
+	@JsonProperty(value = "idevento")
+	private Long idevento;
+	
 	public Contrato(@JsonProperty(value = "idcontrato")Long idcontrato,
-	@JsonProperty(value = "idcliente") Long idcliente,	
-	@JsonProperty(value = "idsitio") Long idsitio,	
-	@JsonProperty(value = "estado") String estado,
-	@JsonProperty(value = "fechain") String fechain,
-	@JsonProperty(value = "fechaen") String fechaen,
-	@JsonProperty(value = "costo") Double costo,
-	@JsonProperty(value = "costoextra") Double costoextra,
-	@JsonProperty(value = "costotot") Double costotot,
-	@JsonProperty(value = "fechapedido") String fechapedido){
+					@JsonProperty(value = "idcliente") Long idcliente,	
+					@JsonProperty(value = "idsitio") Long idsitio,	
+					@JsonProperty(value = "estado") String estado,
+					@JsonProperty(value = "fechain") String fechain,
+					@JsonProperty(value = "fechaen") String fechaen,
+					@JsonProperty(value = "costo") Double costo,
+					@JsonProperty(value = "costoextra") Double costoextra,
+					@JsonProperty(value = "costotot") Double costotot,
+					@JsonProperty(value = "fechapedido") String fechapedido,
+					@JsonProperty(value = "idevento") Long idevento){
 		
 		this.idcontrato = idcontrato;
 		this.idcliente = idcliente;
@@ -55,6 +59,15 @@ public class Contrato {
 		this.costoextra =costoextra;
 		this.costotot = costotot;
 		this.fechapedido = fechapedido;
+		this.idevento = idevento;
+	}
+
+	public Long getIdevento() {
+		return idevento;
+	}
+
+	public void setIdevento(Long idevento) {
+		this.idevento = idevento;
 	}
 
 	public Long getIdcontrato() {

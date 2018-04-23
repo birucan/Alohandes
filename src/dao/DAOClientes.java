@@ -10,6 +10,8 @@ import java.util.ArrayList;
 
 import vos.Cliente;
 import vos.Contrato;
+import vos.Sitio;
+import vosOLD.ejemplo;
 
 
 
@@ -75,7 +77,7 @@ public class DAOClientes {
 		
 		 String[] serviciosplit = servicios.split(".");
 		 
-		 String sql = "INSERT INTO CONTRATOS (IDCONTRATO, IDCLIENTE, IDSITIO, ESTADO, FECHAIN, FECHAEN, COSTO, COSTOEXTRA, COSTOTOT, FECHAPEDIDO) VALUES (";
+		 String sql = "INSERT INTO CONTRATOS (IDCONTRATO, IDCLIENTE, IDSITIO, ESTADO, FECHAIN, FECHAEN, COSTO, COSTOEXTRA, COSTOTOT, FECHAPEDIDO, IDEVENTO) VALUES (";
 		  sql += contrato.getIdcontrato() + ",";
 		  sql += idCliente +",";
 		  sql += idSitio +", '";
@@ -90,7 +92,8 @@ public class DAOClientes {
 	      DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 		  LocalDateTime now = LocalDateTime.now();
 		  
-		  sql += "TO_DATE('"+dtf.format(now)+"', 'DD-MM-YYYY')) ";
+		  sql += "TO_DATE('"+dtf.format(now)+"', 'DD-MM-YYYY'), ";
+		  sql += contrato.getIdevento()+")";
 		  System.out.println(sql);
 		  
 		  	
@@ -124,5 +127,107 @@ public class DAOClientes {
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 	}
+
+	public boolean VerificarEvento(long idEvento, String[] split) throws Exception {
+		boolean response = true;
+		String sql = "SELECT IDEVENTO, COUNT(*) FOO FROM CLIENTES WHERE IDEVENTO="+idEvento+" GROUP BY IDEVENTO";
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+		int cantidad=0;
+		while (rs.next()){
+		cantidad = rs.getInt("FOO");
+		}
+		verSitios(idEvento, split);
+		
+		return response;
+	}
 	
+	private boolean verSitios(long idEvento, String[] split) throws Exception{
+		boolean response = true;
+		ArrayList<Long> sitios = new ArrayList<Long>();
+		String sql = "SELECT * FROM SITIOS WHERE DISPONIBLE = 1";
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+		while(rs.next()){
+			Long niu = rs.getLong("IDSITIO");
+			sitios.add(niu);
+		}
+		sitios = verServicios(sitios, split);
+		ArrayList<Long> gente = contarGente(idEvento);
+		if(sitios.size()>=gente.size()){
+			for (int a = 0; a < split.length; a++) {
+				Contrato contrat;
+				contrat.setCosto(0);
+				contrat.setCostoextra(0);
+				contrat.setCostotot(0);
+				contrat.setEstado("reserva");
+				contrat.setFechaen(fechaen);
+				addEvento(idEvento, sitios, gente.get(a));				
+			}
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+
+
+
+
+	private ArrayList<Long> verServicios(ArrayList<Long> sitios, String[] split) throws Exception {
+		ArrayList<Long> sitiosSirven = new ArrayList<Long>();
+		for (int a = 0; a < sitios.size(); a++) {
+			for (int b = 0; b < split.length; b++) {
+				String sql = "SELECT * FROM SERSIT WHERE IDSITIO ="+sitios.get(a)+" AND IDSERVICIO = "+split[b];
+				if(verificador(sql)){
+					sitiosSirven.add(sitios.get(a));
+				}
+			}
+		}
+		return sitiosSirven;
+	}
+
+	private boolean verificador(String sql) throws Exception {
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+		long tiene = 0;
+		while(rs.next()){
+			tiene = 1;
+		}
+		if(tiene == 0){
+			return false;
+		}else{
+			return true;
+		}
+	
+	}
+	private ArrayList<Long> contarGente(long idEvento) throws Exception {
+		String sql = "SELECT * FROM CLIENTES WHERE IDEVENTO = "+idEvento;
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+		ArrayList<Long> gente = new ArrayList<Long>();
+		while(rs.next()){
+			Long niu = rs.getLong("IDCLIENTE");
+			gente.add(niu);
+		}
+		return gente;
+	}
+	
+	/*
+	 * 
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			String name = rs.getString("NAME");
+			Long id = rs.getLong("ID");
+			ejemplos.add(new ejemplo(id, name));
+		}
+		return ejemplos;
+	 */
 }
