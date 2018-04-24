@@ -1,4 +1,4 @@
-package vos;
+nopackage vos;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 

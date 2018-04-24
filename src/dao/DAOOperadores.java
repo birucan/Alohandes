@@ -62,10 +62,10 @@ public class DAOOperadores {
 	}
 
 	public void addOperador(Operador operador) throws Exception {
-		 String sql = "INSERT INTO OPERADORES (NOMBRE, TIPO) VALUES ('";
-		  sql += operador.getNombre() +"', '";
-		  sql += operador.getTipo()+"')";
-		  
+		String sql = "INSERT INTO OPERADORES (NOMBRE, TIPO) VALUES ('";
+		sql += operador.getNombre() +"', '";
+		sql += operador.getTipo()+"')";
+
 		System.out.println(sql);  
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -73,16 +73,16 @@ public class DAOOperadores {
 	}
 
 	public void addSitio(Sitio sitio, long idoperador) throws Exception {
-		 String sql = "INSERT INTO SITIOS (IDOPERADOR, TIPO, DESCRIPCION) VALUES (";
-		  sql += idoperador +", '";
-		  sql += sitio.getTipo() + "', '";
-		  sql += sitio.getDescripcion()+"')";
-		  
-		  System.out.println(sql);   
+		String sql = "INSERT INTO SITIOS (IDOPERADOR, TIPO, DESCRIPCION) VALUES (";
+		sql += idoperador +", '";
+		sql += sitio.getTipo() + "', '";
+		sql += sitio.getDescripcion()+"')";
+
+		System.out.println(sql);   
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
-		
+
 	}
 
 	public void removeSitio(long idoperador, long idsitio) throws Exception {
@@ -97,7 +97,7 @@ public class DAOOperadores {
 			if(rs.getLong("IDSITIO")==idsitio){
 				dependencia = true;
 			}
-			
+
 		}
 		if(dependencia){
 			return;
@@ -106,10 +106,10 @@ public class DAOOperadores {
 					sql = "DELETE FROM SITIOS"
 				}*/
 		String sql = "DELETE FROM SITIOS WHERE IDOPERADOR = "+idoperador+" AND IDSITIO = "+idsitio;
-		 System.out.println(sql);   
-			PreparedStatement prepStmt = conn.prepareStatement(sql);
-			recursos.add(prepStmt);
-			prepStmt.executeQuery();
+		System.out.println(sql);   
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
 	}
 
 	public double getGanancias(long idoperador, int ano) throws Exception {
@@ -130,10 +130,114 @@ public class DAOOperadores {
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
-        List<Long> returner = new ArrayList<Long>();
+		List<Long> returner = new ArrayList<Long>();
 		while (rs.next()) {
 			returner.add(rs.getLong("RETURNER"));
 		}
-	return returner;
-}
+		return returner;
+	}
+
+	/**
+	 * Valida si existe el sitio con la informacion suministrada
+	 */
+	public boolean existeSitio(long idOperador, long idSitio) throws Exception {
+		String sql ="SELECT * FROM SITIOS WHERE SITIOS.IDSITIO = "+idSitio+" AND SITIOS.IDOPERADOR = "+idOperador+";";
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+		if (rs.next()){
+			return true;
+		}
+		return false ;
+	}
+
+	public boolean estaHabilitada(long idoperador, long idsitio)throws Exception {
+
+		String sql ="SELECT SITIOS.DISPONIBLE FROM SITIOS WHERE SITIOS.IDSITIO = "+idSitio+" AND SITIOS.IDOPERADOR = "+idOperador+";";
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+		if (rs.next()){
+			int hab = rs.getInt("DISPONIBLE");
+			if (hab == 1){
+				return true ;
+			}
+			else{
+				return false;
+			}
+		}
+
+		return false;
+
+	}
+
+	public ArrayList<Contrato> getContratosSitio(long idsitio)throws Exception{
+		String sql ="SELECT * FROM CONTRATOS WHERE IDSITIO = "+ idsitio +";";
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+		ArrayList<Contrato> contras = new ArrayList<Contrato>()
+		while(rs.next()){
+			Long idcont = rs.getLong("IDCONTRATO");
+			Long idcli = rs.getLong("IDCLIENTE");
+			Long idsitio = rs.getLong("IDSITIO");
+			String estado = rs.getString("ESTADO");
+			String fechain = rs.getString ("FECHAIN");
+			String fechaen = rs.getString ("FECHAEN");
+			String fechaped = rs.getString ("FECHAPED");
+			Long idev = rs.getString("IDEVENTO");
+			double costo = rs.getDouble("COSTO");
+			double costoextra = rs.getDouble("COSTOEXTRA");
+			double costotot = rs.getDouble("COSTOTOT");
+			if (!estado.contains("cancelado")){
+				Contrato con = new Contrato (idcon, idcli, idsitio,estado, fechain, fechaen, costo, costoextra, contotot, fechaped, idev);
+				contras.add(con);
+			}
+
+		}
+
+	}
+	
+	public void organizarReserva(long idsitio){
+							
+	}
+
+
+	public void deshabilitarSitio(long idoperador, long idsitio)throws Exception{
+		if (existeSitio(idOperador, idSitio)){
+			if (esHabilitada(idoperador, idsitio)){
+				String sql ="UPDATE SITIOS SET SITIOS.DISPONIBLE =0 WHERE SITIOS.IDSITIO = "+idSitio+" AND SITIOS.IDOPERADOR = "+idOperador+";";
+				PreparedStatement prepStmt = conn.prepareStatement(sql);
+				recursos.add(prepStmt);
+				ResultSet rs = prepStmt.executeQuery();
+				organizarReserva(idsitio);
+			}
+			else
+			{
+				throw new Exception ("El alojamiento ya se encuentra desabilitado");
+			}
+		}
+		else{
+			throw new Exception ("No existe el sitio especificado");
+		}
+
+	}
+
+	public void habilidarSitio(long idoperador, long idsitio){
+		if (existeSitio(idOperador, idSitio)){
+			if (!esHabilitada(idoperador, idsitio)){
+				String sql ="UPDATE SITIOS SET SITIOS.DISPONIBLE =1 WHERE SITIOS.IDSITIO = "+idSitio+" AND SITIOS.IDOPERADOR = "+idOperador+";";
+				PreparedStatement prepStmt = conn.prepareStatement(sql);
+				recursos.add(prepStmt);
+				ResultSet rs = prepStmt.executeQuery();
+			}
+			else {
+				throw new Exception ("El alojamiento ya se encuentra habilitado")
+			}
+
+		}
+		else{
+			throw new Exception ("No existe el sitio especificado");
+		}
+	}
 }

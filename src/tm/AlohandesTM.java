@@ -54,7 +54,7 @@ public class AlohandesTM {
 	 * Atributo que guarda el driver que se va a usar para conectarse a la base de datos.
 	 */
 	private String driver;
-	
+
 	/**
 	 * conexion a la base de datos
 	 */
@@ -105,45 +105,45 @@ public class AlohandesTM {
 	}
 	//RF3
 	public void addCliente(Cliente cliente) throws Exception {
-					
-			DAOClientes daoC = new DAOClientes();
-			try 
-			{
-				
-				this.conn = darConexion();
-				daoC.setConn(conn);
-				daoC.addCliente(cliente);
-				conn.commit();
 
-			} catch (SQLException e) {
-				System.err.println("SQLException:" + e.getMessage());
-				e.printStackTrace();
-				throw e;
-			} catch (Exception e) {
-				System.err.println("GeneralException:" + e.getMessage());
-				e.printStackTrace();
-				throw e;
-			} finally {
-				try {
-					daoC.cerrarRecursos();
-					if(this.conn!=null)
-						this.conn.close();
-				} catch (SQLException exception) {
-					System.err.println("SQLException closing resources:" + exception.getMessage());
-					exception.printStackTrace();
-					throw exception;
-	}
-			
-			
-}
-		
+		DAOClientes daoC = new DAOClientes();
+		try 
+		{
+
+			this.conn = darConexion();
+			daoC.setConn(conn);
+			daoC.addCliente(cliente);
+			conn.commit();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoC.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+
+
+		}
+
 	}
 	//RF1
 	public void addOperador(Operador operador) throws Exception {
 		DAOOperadores daoO = new DAOOperadores();
 		try 
 		{
-			
+
 			this.conn = darConexion();
 			daoO.setConn(conn);
 			daoO.addOperador(operador);
@@ -167,15 +167,15 @@ public class AlohandesTM {
 				exception.printStackTrace();
 				throw exception;
 			}
-		
-	  }
+
+		}
 	}
-    //RF2
+	//RF2
 	public void addSitio(Sitio sitio, long idoperador) throws Exception {
 		DAOOperadores daoO = new DAOOperadores();
 		try 
 		{
-			
+
 			this.conn = darConexion();
 			daoO.setConn(conn);
 			daoO.addSitio(sitio, idoperador);
@@ -199,15 +199,15 @@ public class AlohandesTM {
 				exception.printStackTrace();
 				throw exception;
 			}
-		
-	  }
+
+		}
 	}
-    //RF4
+	//RF4
 	public void addReserva(Contrato contrato, long idCliente, long idSitio, String servicios) throws Exception {
 		DAOClientes daoC = new DAOClientes();
 		try 
 		{
-			
+
 			this.conn = darConexion();
 			daoC.setConn(conn);
 			daoC.addReserva(contrato, idCliente, idSitio, servicios);
@@ -232,17 +232,17 @@ public class AlohandesTM {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
 				exception.printStackTrace();
 				throw exception;
-}
-		
+			}
+
+		}
+
 	}
-	
-}
 
 	public void cancelReserva(long idCliente, long idReserva) throws Exception {
 		DAOClientes daoC = new DAOClientes();
 		try 
 		{
-			
+
 			this.conn = darConexion();
 			daoC.setConn(conn);
 			daoC.cancelReserva(idCliente, idReserva);
@@ -265,9 +265,9 @@ public class AlohandesTM {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
 				exception.printStackTrace();
 				throw exception;
-}
-		
-	}
+			}
+
+		}
 
 	}
 
@@ -275,7 +275,7 @@ public class AlohandesTM {
 		DAOOperadores daoO = new DAOOperadores();
 		try 
 		{
-			
+
 			this.conn = darConexion();
 			daoO.setConn(conn);
 			daoO.removeSitio(idoperador,idsitio);
@@ -299,8 +299,8 @@ public class AlohandesTM {
 				exception.printStackTrace();
 				throw exception;
 			}
-		
-	  }
+
+		}
 	}
 
 	public double getGanancias(long idoperador, int ano) throws Exception {
@@ -308,11 +308,11 @@ public class AlohandesTM {
 		double returner=0;
 		try 
 		{
-			
+
 			this.conn = darConexion();
 			daoO.setConn(conn);
 			returner = daoO.getGanancias(idoperador,ano);
-			
+
 
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
@@ -327,14 +327,14 @@ public class AlohandesTM {
 				daoO.cerrarRecursos();
 				if(this.conn!=null)
 					this.conn.close();
-				
+
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
 				exception.printStackTrace();
 				throw exception;
 			}
-		
-	  }
+
+		}
 		return returner;
 	}
 
@@ -343,11 +343,11 @@ public class AlohandesTM {
 		List<Long> returner=null;
 		try 
 		{
-			
+
 			this.conn = darConexion();
 			daoO.setConn(conn);
 			returner = daoO.top20();
-			
+
 
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
@@ -362,63 +362,63 @@ public class AlohandesTM {
 				daoO.cerrarRecursos();
 				if(this.conn!=null)
 					this.conn.close();
-				
+
 			} catch (SQLException exception) {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
 				exception.printStackTrace();
 				throw exception;
 			}
-		
-	  }
+
+		}
 		return returner;
 	}
 
 	public String addReservaColectiva(long idEvento, String servicios, Contrato contrato) throws Exception {
-		 		String response = "No es posible la reserva";
-				DAOClientes daoC = new DAOClientes();
-				try 
-				{
-					
-					this.conn = darConexion();
-					daoC.setConn(conn);
-					if(daoC.VerificarEvento(idEvento, servicios.split(","), contrato, servicios)){
-						//daoC.addSereven(idEvento, servicios.split(","));
-						
-						response = "La reserva fue realizada exitosamente";
-					}
-					
-					
-					conn.commit();
+		String response = "No es posible la reserva";
+		DAOClientes daoC = new DAOClientes();
+		try 
+		{
 
-				} catch (SQLException e) {
-					System.err.println("SQLException:" + e.getMessage());
-					e.printStackTrace();
-					throw e;
-				} catch (Exception e) {
-					System.err.println("GeneralException:" + e.getMessage());
-					e.printStackTrace();
-					throw e;
-				} finally {
-					try {
-						daoC.cerrarRecursos();
-						if(this.conn!=null)
-							this.conn.close();
-					} catch (SQLException exception) {
-						System.err.println("SQLException closing resources:" + exception.getMessage());
-						exception.printStackTrace();
-						throw exception;
-					}
-				
-				}
-				return response;
-			
+			this.conn = darConexion();
+			daoC.setConn(conn);
+			if(daoC.VerificarEvento(idEvento, servicios.split(","), contrato, servicios)){
+				//daoC.addSereven(idEvento, servicios.split(","));
+
+				response = "La reserva fue realizada exitosamente";
+			}
+
+
+			conn.commit();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoC.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+
+		}
+		return response;
+
 	}
 
 	public void cancelarEvento(long idEvento) throws Exception {
 		DAOClientes daoC = new DAOClientes();
 		try 
 		{
-			
+
 			this.conn = darConexion();
 			daoC.setConn(conn);
 			daoC.cancelEvento(idEvento);
@@ -441,9 +441,73 @@ public class AlohandesTM {
 				System.err.println("SQLException closing resources:" + exception.getMessage());
 				exception.printStackTrace();
 				throw exception;
-}
+			}
+
+		}
+
+	}
+	
+	public void deshabilitarSitio(long idoperador, long idsitio) throws Exception {
+		DAOOperadores daoO = new DAOOperadores();
+		try 
+		{
+			this.conn = darConexion();
+			daoO.setConn(conn);
+			daoO.deshabilitarSitio(idoperador,idsitio);
+			conn.commit();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoO.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		
+	  }
 		
 	}
+	
+	public void habilidarSitio(long idoperador, long idsitio) throws Exception {
+		DAOOperadores daoO = new DAOOperadores();
+		try 
+		{
+			this.conn = darConexion();
+			daoO.setConn(conn);
+			daoO.habilitarSitio(idoperador,idsitio);
+			conn.commit();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoO.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		
+	  }
 		
 	}
 }
