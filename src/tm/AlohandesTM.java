@@ -373,7 +373,7 @@ public class AlohandesTM {
 		return returner;
 	}
 
-	public String addReservaColectiva(long idEvento, String servicios) {
+	public String addReservaColectiva(long idEvento, String servicios, Contrato contrato) throws Exception {
 		 		String response = "No es posible la reserva";
 				DAOClientes daoC = new DAOClientes();
 				try 
@@ -381,9 +381,9 @@ public class AlohandesTM {
 					
 					this.conn = darConexion();
 					daoC.setConn(conn);
-					if(daoC.VerificarEvento(idEvento, servicios.split(","))){
-						daoC.addSereven(idEvento, servicios.split(","));
-						daoC.addReservaCollectiva(idEvento, servicios);
+					if(daoC.VerificarEvento(idEvento, servicios.split(","), contrato, servicios)){
+						//daoC.addSereven(idEvento, servicios.split(","));
+						
 						response = "La reserva fue realizada exitosamente";
 					}
 					
@@ -410,6 +410,40 @@ public class AlohandesTM {
 					}
 				
 				}
+				return response;
 			
+	}
+
+	public void cancelarEvento(long idEvento) throws Exception {
+		DAOClientes daoC = new DAOClientes();
+		try 
+		{
+			
+			this.conn = darConexion();
+			daoC.setConn(conn);
+			daoC.cancelEvento(idEvento);
+			conn.commit();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoC.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+}
+		
+	}
+		
 	}
 }

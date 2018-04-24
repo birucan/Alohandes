@@ -90,14 +90,14 @@ public class ClienteServices {
 	}
 	
 	@POST
-	@Path("/reservaColectiva/{idEvento}/{servicios}/")
+	@Path("/cancelarEvento/{idEvento}/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addReservaColectiva(@PathParam("idEvento") long idEvento, @PathParam("servicios") String Servicios) {
+	public Response addReservaColectiva(@PathParam("idEvento") long idEvento) {
 		AlohandesTM tm = new AlohandesTM(getPath());
-		String response ="si aparece esto te jodiste papí";
+		String response ="test";
 		try {
-			response = tm.addReservaColectiva(idEvento, Servicios);
+			tm.cancelarEvento(idEvento);
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}

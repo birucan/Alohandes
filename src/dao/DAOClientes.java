@@ -128,7 +128,7 @@ public class DAOClientes {
 		prepStmt.executeQuery();
 	}
 
-	public boolean VerificarEvento(long idEvento, String[] split) throws Exception {
+	public boolean VerificarEvento(long idEvento, String[] split, Contrato contrato, String servicios) throws Exception {
 		boolean response = true;
 		String sql = "SELECT IDEVENTO, COUNT(*) FOO FROM CLIENTES WHERE IDEVENTO="+idEvento+" GROUP BY IDEVENTO";
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
@@ -138,12 +138,13 @@ public class DAOClientes {
 		while (rs.next()){
 		cantidad = rs.getInt("FOO");
 		}
-		verSitios(idEvento, split);
+		if(verSitios(idEvento, split, contrato, servicios)){
+			return response;	
+		}else{return false;}
 		
-		return response;
 	}
 	
-	private boolean verSitios(long idEvento, String[] split) throws Exception{
+	private boolean verSitios(long idEvento, String[] split, Contrato contrato, String servicios) throws Exception{
 		boolean response = true;
 		ArrayList<Long> sitios = new ArrayList<Long>();
 		String sql = "SELECT * FROM SITIOS WHERE DISPONIBLE = 1";
@@ -157,14 +158,9 @@ public class DAOClientes {
 		sitios = verServicios(sitios, split);
 		ArrayList<Long> gente = contarGente(idEvento);
 		if(sitios.size()>=gente.size()){
-			for (int a = 0; a < split.length; a++) {
-				Contrato contrat;
-				contrat.setCosto(0);
-				contrat.setCostoextra(0);
-				contrat.setCostotot(0);
-				contrat.setEstado("reserva");
-				contrat.setFechaen(fechaen);
-				addEvento(idEvento, sitios, gente.get(a));				
+			for (int a = 0; a < gente.size(); a++) {
+				addReserva(contrato, gente.get(a), sitios.get(a), servicios);
+				contrato.setIdcontrato(contrato.getIdcontrato()+1);
 			}
 			return true;
 		}else{
@@ -178,13 +174,24 @@ public class DAOClientes {
 
 	private ArrayList<Long> verServicios(ArrayList<Long> sitios, String[] split) throws Exception {
 		ArrayList<Long> sitiosSirven = new ArrayList<Long>();
+		boolean agregar= true;
 		for (int a = 0; a < sitios.size(); a++) {
+			agregar =true;
 			for (int b = 0; b < split.length; b++) {
 				String sql = "SELECT * FROM SERSIT WHERE IDSITIO ="+sitios.get(a)+" AND IDSERVICIO = "+split[b];
 				if(verificador(sql)){
-					sitiosSirven.add(sitios.get(a));
+					
+				}else{
+					agregar=false;
+					break;
 				}
 			}
+				if(agregar){
+					sitiosSirven.add(sitios.get(a));
+					System.out.println("id de sitio que cumple:\n");
+					System.out.println(sitios.get(a));
+				}
+			
 		}
 		return sitiosSirven;
 	}
@@ -215,6 +222,27 @@ public class DAOClientes {
 			gente.add(niu);
 		}
 		return gente;
+	}
+
+	public void cancelEvento(long idEvento) throws Exception {
+		String sql= "SELECT * FROM CONTRATOS WHERE IDEVENTO = "+idEvento;
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+		ArrayList<Long> idsclientes = new ArrayList<Long>();
+		ArrayList<Long> idsreservas = new ArrayList<Long>();
+		
+		while(rs.next()){
+			Long niu = rs.getLong("IDCLIENTE");
+			Long niu2 = rs.getLong("IDCONTRATO");
+			
+			idsclientes.add(niu);
+			idsreservas.add(niu2);
+		}
+		
+		for (int a = 0; a < idsclientes.size(); a++) {
+			cancelReserva(idsclientes.get(a), idsreservas.get(a));
+		}
 	}
 	
 	/*
