@@ -1,6 +1,7 @@
 package rest;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -82,6 +83,21 @@ public class OperadoresServices {
 		double returner = 0;
 		try {
 			returner = tm.getGanancias(idoperador, ano);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(returner).build();
+	}
+	
+	@GET
+	@Path("frecuentes")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getClientesFrecuentes() {
+		AlohandesTM tm = new AlohandesTM(getPath());
+		ArrayList<Long> returner = new ArrayList<Long>();
+		try {
+			returner = tm.getClientesFrecuentes();
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}

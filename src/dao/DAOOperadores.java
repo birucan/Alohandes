@@ -136,4 +136,17 @@ public class DAOOperadores {
 		}
 	return returner;
 }
+
+	public ArrayList<Long> darClientesFrecuentes() throws Exception {
+		String sql = "WITH FUU AS (SELECT IDCLIENTE, COUNT(*) AS FOO FROM CONTRATOS GROUP BY IDCLIENTE) SELECT * FROM FUU WHERE FOO >= 3";
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+        
+		ArrayList<Long> returner = new ArrayList<Long>();
+		while (rs.next()) {
+			returner.add(rs.getLong("IDCLIENTE"));
+		}
+	return returner;
+	}
 }

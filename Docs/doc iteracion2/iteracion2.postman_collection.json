@@ -1,0 +1,109 @@
+{
+	"info": {
+		"name": "iteracion2",
+		"_postman_id": "b381caae-0b1a-0d04-4e93-a4366477faed",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "RF7",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"idcontrato\":2, \"idcliente\":1, \"idsitio\":1, \"estado\":\"\", \"fechain\":\"3-12-2018\",\"fechaen\":\"5-12-2018\", \"costo\":50000, \"costoextra\":20000, \"idevento\":1 }"
+				},
+				"url": {
+					"raw": "http://localhost:8080/AlohAndes/rest/clientes/reservaColectiva/1/1,2,3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"AlohAndes",
+						"rest",
+						"clientes",
+						"reservaColectiva",
+						"1",
+						"1,2,3"
+					]
+				},
+				"description": "agrega reserva de un evento al sistema"
+			},
+			"response": []
+		},
+		{
+			"name": "RF8",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/AlohAndes/rest/clientes/cancelarEvento/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"AlohAndes",
+						"rest",
+						"clientes",
+						"cancelarEvento",
+						"1"
+					]
+				},
+				"description": "cancela un evento"
+			},
+			"response": []
+		},
+		{
+			"name": "RFC8",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/AlohAndes/rest/operadores/frecuentes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"AlohAndes",
+						"rest",
+						"operadores",
+						"frecuentes"
+					]
+				},
+				"description": "cancela un evento"
+			},
+			"response": []
+		}
+	]
+}

@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -445,5 +446,40 @@ public class AlohandesTM {
 		
 	}
 		
+	}
+
+	public ArrayList<Long> getClientesFrecuentes() throws Exception{
+		DAOOperadores daoO = new DAOOperadores();
+		ArrayList<Long> returner=null;
+		try 
+		{
+			
+			this.conn = darConexion();
+			daoO.setConn(conn);
+			returner = daoO.darClientesFrecuentes();
+			
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoO.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+				
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		
+	  }
+		return returner;
 	}
 }
